@@ -432,33 +432,36 @@ export default function Dashboard({ data, loading, onNewSearch }) {
     return <DashboardSkeleton />;
   }
 
-  // Aggregate contributions dynamically for the last 6 months (makes the graph varied and adds labels)
+  // Aggregate contributions dynamically for the last 6 months cleanly by YYYY-MM
   const getMonthlyAggregation = () => {
     if (!contributions || contributions.length === 0) return [];
     
     const monthlyMap = {};
     const monthsToInclude = [];
     
-    // Generate the last 6 months in chronological order
+    // Generate the last 6 months in chronological order safely without date rollover issues
     for (let i = 5; i >= 0; i--) {
       const d = new Date();
+      d.setDate(1); // Set to 1st day of current month first to prevent month-end date rollover bugs
       d.setMonth(d.getMonth() - i);
       const monthLabel = d.toLocaleString('en-US', { month: 'short' });
-      monthsToInclude.push(monthLabel);
-      monthlyMap[monthLabel] = 0;
+      const year = d.getFullYear();
+      const monthKey = `${year}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      monthsToInclude.push({ label: monthLabel, key: monthKey });
+      monthlyMap[monthKey] = 0;
     }
 
     contributions.forEach(day => {
-      const dateObj = new Date(day.date);
-      const monthLabel = dateObj.toLocaleString('en-US', { month: 'short' });
-      if (monthlyMap[monthLabel] !== undefined) {
-        monthlyMap[monthLabel] += day.count;
+      if (!day.date) return;
+      const monthKey = day.date.substring(0, 7); // Extract "YYYY-MM"
+      if (monthlyMap[monthKey] !== undefined) {
+        monthlyMap[monthKey] += day.count;
       }
     });
 
-    return monthsToInclude.map(month => ({
-      month,
-      count: monthlyMap[month]
+    return monthsToInclude.map(item => ({
+      month: item.label,
+      count: monthlyMap[item.key] || 0
     }));
   };
 
@@ -669,7 +672,6 @@ export default function Dashboard({ data, loading, onNewSearch }) {
                             />
                           ))}
                         </Pie>
-                        <Tooltip formatter={(value) => `${value}%`} />
                       </PieChart>
                     </ResponsiveContainer>
                     {/* Text overlay center of donut (Counts up!) */}
