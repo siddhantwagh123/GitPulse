@@ -103,6 +103,24 @@ export default function App() {
     };
   }, [cooldownSec]);
 
+  // Handle browser Back / Forward button navigation (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const userParam = params.get('user');
+      if (userParam) {
+        handleAnalyze(userParam);
+      } else {
+        setView('landing');
+        setAnalyticsData(null);
+        setError(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   // Parse URL query parameter (e.g. ?user=octocat) to load profiles automatically if shared
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

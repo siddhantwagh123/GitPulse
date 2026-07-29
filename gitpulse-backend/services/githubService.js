@@ -260,17 +260,55 @@ async function fetchWithRest(username) {
       const contribPage = await axios.get(`https://github.com/users/${username}/contributions`, { headers });
       const html = contribPage.data;
 
-      // Extract all contribution calendar days: data-date and data-level
-      const tdRegex = /<td[^>]+data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"/g;
-      let match;
-      const countMap = [0, 1, 4, 8, 12]; // Approximate count mappings for level 0-4
+      // Extract exact total contributions heading from HTML if present
+      const totalMatch = html.match(/class="f4[^>]*">[\s\S]*?([\d,]+)\s+contributions/i) || 
+                         html.match(/([\d,]+)\s+contributions\s+in\s+the\s+last\s+year/i) ||
+                         html.match(/([\d,]+)\s+contributions\s+in\s+\d{4}/i);
+      if (totalMatch) {
+        totalContributions = parseInt(totalMatch[1].replace(/,/g, ''), 10);
+      }
 
-      while ((match = tdRegex.exec(html)) !== null) {
-        const date = match[1];
-        const level = parseInt(match[2]);
-        const count = countMap[level] || 0;
-        contributions.push({ date, count });
-        totalContributions += count;
+      // Extract exact daily contribution counts from tooltips
+      const tooltipRegex = /(No|[\d,]+)\s+contribution[s]?\s+on\s+([A-Za-z]+)\s+(\d+),\s+(\d{4})/gi;
+      let match;
+      const monthMap = { Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06', Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' };
+      const parsedDays = {};
+
+      while ((match = tooltipRegex.exec(html)) !== null) {
+        const countStr = match[1];
+        const monthName = match[2].substring(0, 3);
+        const dayStr = match[3].padStart(2, '0');
+        const yearStr = match[4];
+        
+        const count = countStr.toLowerCase() === 'no' ? 0 : parseInt(countStr.replace(/,/g, ''), 10);
+        const monthNum = monthMap[monthName];
+        if (monthNum) {
+          const dateStr = `${yearStr}-${monthNum}-${dayStr}`;
+          parsedDays[dateStr] = count;
+        }
+      }
+
+      if (Object.keys(parsedDays).length > 0) {
+        contributions = Object.entries(parsedDays).map(([date, count]) => ({ date, count }));
+        if (totalContributions === 0) {
+          totalContributions = Object.values(parsedDays).reduce((a, b) => a + b, 0);
+        }
+      } else {
+        // Fallback: td Regex with data-date and data-level
+        const tdRegex = /<td[^>]+data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"/g;
+        const countMap = [0, 1, 4, 8, 12];
+        let tdMatch;
+        let sumFallback = 0;
+        while ((tdMatch = tdRegex.exec(html)) !== null) {
+          const date = tdMatch[1];
+          const level = parseInt(tdMatch[2]);
+          const count = countMap[level] || 0;
+          contributions.push({ date, count });
+          sumFallback += count;
+        }
+        if (totalContributions === 0) {
+          totalContributions = sumFallback;
+        }
       }
 
       // Sort contributions chronologically
