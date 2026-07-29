@@ -1,0 +1,536 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply bg-slate-50/50 text-slate-800 antialiased;
+}
+
+/* Custom premium styling features */
+.card-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  border-radius: 1rem;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background 0.3s ease;
+}
+
+.glow-hover {
+  transition: all 0.3s ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.1), 0 4px 6px -4px rgb(59 130 246 / 0.1);
+  border-color: #93c5fd;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* From Uiverse.io by andrew-demchenk0 - Dark Mode Toggle Switch */ 
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #73C0FC;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  left: 2px;
+  bottom: 2px;
+  z-index: 2;
+  background-color: #e8e8e8;
+  transition: .4s;
+}
+
+.sun svg {
+  position: absolute;
+  top: 6px;
+  left: 36px;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+}
+
+.moon svg {
+  fill: #73C0FC;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+}
+
+.sun svg {
+  animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.moon svg {
+  animation: tilt 5s linear infinite;
+}
+
+@keyframes tilt {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.input:checked + .slider {
+  background-color: #183153;
+}
+
+.input:focus + .slider {
+  box-shadow: 0 0 1px #183153;
+}
+
+.input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+/* Global Dark Mode Style Overrides */
+html.dark body {
+  background-color: #0b111e;
+  color: #f1f5f9;
+}
+
+/* Override all light gradients in dark mode to deep navy/slate gradients */
+html.dark .bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, #090d16 0%, #0b111e 50%, #070a12 100%) !important;
+}
+
+html.dark header {
+  background-color: rgba(11, 17, 30, 0.8) !important;
+  border-color: #1e293b !important;
+}
+
+/* Cards & Panel Overrides */
+html.dark .bg-white {
+  background-color: #131c2e !important;
+}
+
+html.dark .border-slate-200, 
+html.dark .border-slate-200\/80 {
+  border-color: #1e293b !important;
+}
+
+html.dark .border-slate-100 {
+  border-color: #1e293b !important;
+}
+
+/* Text Colors Overrides */
+html.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-400 {
+  color: #64748b !important;
+}
+
+/* Text Gradients in Dark Mode */
+html.dark .text-gradient {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Background Grays & Slates */
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/50,
+html.dark .bg-slate-100 {
+  background-color: #1e293b !important;
+}
+
+/* Input Fields and Placeholders */
+html.dark input {
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder {
+  color: #64748b !important;
+}
+
+/* Custom Interactive Hover Overrides */
+html.dark .hover\:bg-slate-50:hover {
+  background-color: rgba(30, 41, 59, 0.4) !important;
+}
+
+html.dark .hover\:text-slate-600:hover {
+  color: #e2e8f0 !important;
+}
+
+html.dark .hover\:border-slate-300:hover {
+  border-color: #334155 !important;
+}
+
+/* Feature Icon Boxes in Dark Mode */
+html.dark .bg-blue-50 {
+  background-color: rgba(30, 41, 59, 0.4) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+}
+
+html.dark .border-blue-100 {
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Mock Graphics Panel Overrides */
+html.dark .bg-blue-50\/50 {
+  background-color: rgba(30, 41, 59, 0.3) !important;
+}
+
+html.dark .border-blue-100\/50 {
+  border-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+/* Timeline Vertical Line */
+html.dark .before\:bg-slate-100::before {
+  background-color: #1e293b !important;
+}
+
+/* Scrollbar styling for dark mode */
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Fix for charts to look good in dark mode */
+html.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+/* Glassmorphism Shimmer Sweep Animation */
+.glass-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.15) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg) translateX(-150%);
+  animation: shimmer-sweep 7s infinite ease-in-out;
+}
+
+/* Dark mode glass shimmer: softer white-blue light glow */
+html.dark .glass-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(59, 130, 246, 0.05) 30%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(59, 130, 246, 0.05) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: skewX(-20deg) translateX(-150%);
+  }
+  20%, 100% {
+    transform: skewX(-20deg) translateX(150%);
+  }
+}
+
+/* Interactive Cursor Spotlight Grid Overlay */
+.interactive-grid {
+  mask-image: radial-gradient(
+    250px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    black 0%,
+    rgba(0, 0, 0, 0.4) 40%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    250px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    black 0%,
+    rgba(0, 0, 0, 0.4) 40%,
+    transparent 100%
+  );
+  transition: mask-image 0.15s ease, -webkit-mask-image 0.15s ease;
+}
+
+/* Subtle mouse tracking ambient glow behind the grid mesh */
+.interactive-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(59, 130, 246, 0.08) 0%,
+    transparent 80%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+html.dark .interactive-glow::after {
+  background: radial-gradient(
+    320px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(96, 165, 250, 0.06) 0%,
+    transparent 80%
+  );
+}
+
+.print-only-header {
+  display: none !important;
+}
+
+/* Print Styles Sheet for clean PDF rendering */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0 !important; /* Strips browser default headers (date, title) and footers (URL, page numbers) */
+  }
+
+  .print-only-header {
+    display: flex !important;
+    position: fixed;
+    top: 10mm;
+    left: 15mm;
+    right: 15mm;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8pt !important;
+    font-weight: 700 !important;
+    color: #94a3b8 !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    padding-bottom: 6px;
+    z-index: 9999;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  html.dark .print-only-header {
+    border-bottom-color: #334155 !important;
+    color: #475569 !important;
+  }
+
+  body {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-content-cell {
+    padding-left: 15mm !important;
+    padding-right: 15mm !important;
+  }
+
+  html:not(.dark), html:not(.dark) body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+  }
+
+  html.dark, html.dark body {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    font-size: 11pt !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide navigation bar and interactive items */
+  header,
+  nav,
+  .no-print,
+  button,
+  .border-b.border-slate-200.flex.gap-2 {
+    display: none !important;
+  }
+
+  /* Clear background grids and filters */
+  .interactive-glow,
+  .interactive-glow::after,
+  .interactive-grid,
+  .glass-shimmer {
+    display: none !important;
+    background: none !important;
+  }
+
+  /* Format main containers to occupy full page */
+  .min-h-\[calc\(100vh-4rem\)\] {
+    min-height: auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .max-w-7xl {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Theme-specific background card colors during print */
+  html:not(.dark) .bg-white {
+    background-color: #ffffff !important;
+  }
+  html.dark .bg-slate-900,
+  html.dark .bg-slate-950,
+  html.dark .bg-slate-900\/20,
+  html.dark .bg-slate-900\/50,
+  html.dark .bg-slate-900\/40,
+  html.dark .bg-slate-900\/10 {
+    background-color: #0f172a !important;
+  }
+
+  /* Theme-specific border colors during print */
+  html:not(.dark) .border,
+  html:not(.dark) .border-slate-200,
+  html:not(.dark) .border-slate-200\/80 {
+    border-color: #e2e8f0 !important;
+  }
+  html.dark .border,
+  html.dark .border-slate-800 {
+    border-color: #1e293b !important;
+  }
+
+  /* Avoid page break card splitting */
+  .bg-white,
+  .bg-gradient-to-br,
+  .border,
+  .bg-slate-900 {
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Preserve grid layouts for side-by-side columns and badges during print */
+  .grid {
+    display: grid !important;
+    gap: 16px !important;
+  }
+
+  .grid > * {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Scale wide tables and grids to fit A4 page width */
+  .w-full.overflow-x-auto {
+    overflow-x: visible !important;
+  }
+
+  .min-w-\[780px\] {
+    min-width: 100% !important;
+    width: 100% !important;
+    transform: scale(0.85) !important;
+    transform-origin: left top !important;
+  }
+
+  /* Force background colors on heatmap contribution cells using inset box shadows */
+  .bg-slate-100 { box-shadow: inset 0 0 0 10px #f1f5f9 !important; background-color: #f1f5f9 !important; }
+  .bg-emerald-100 { box-shadow: inset 0 0 0 10px #d1fae5 !important; background-color: #d1fae5 !important; }
+  .bg-emerald-300 { box-shadow: inset 0 0 0 10px #6ee7b7 !important; background-color: #6ee7b7 !important; }
+  .bg-emerald-500 { box-shadow: inset 0 0 0 10px #10b981 !important; background-color: #10b981 !important; }
+  .bg-emerald-700 { box-shadow: inset 0 0 0 10px #047857 !important; background-color: #047857 !important; }
+
+  /* Enforce exact sizing on Recharts containers during printing to prevent Saturday/columns clip */
+  .weekly-chart-container,
+  .weekly-chart-container .recharts-responsive-container,
+  .weekly-chart-container .recharts-wrapper {
+    width: 630px !important;
+    height: 160px !important;
+  }
+
+  .sparkline-container,
+  .sparkline-container .recharts-responsive-container,
+  .sparkline-container .recharts-wrapper {
+    width: 240px !important;
+    height: 90px !important;
+  }
+
+  .pie-chart-container,
+  .pie-chart-container .recharts-responsive-container,
+  .pie-chart-container .recharts-wrapper {
+    width: 130px !important;
+    height: 110px !important;
+  }
+}
